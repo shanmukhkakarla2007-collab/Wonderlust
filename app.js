@@ -4,26 +4,34 @@ if(process.env.NODE_ENV!=="production"){
 
 
 
-
+//express 
 const express=require("express");
 const app=express();
+
 // used for connectoion
 const mongoose=require("mongoose"); 
 const dburl=process.env.ATLASDB_URL
+
+//getting models from models folder
 const listing=require("./models/listing.js");
 const review=require("./models/review.js");
 const user=require("./models/user.js");
+
+
 const path=require("path");
+
 //used to convert post request into put or delete requests
 const methodOverride = require('method-override');
 const ejsmate=require('ejs-mate');
 const ExpressError=require("./utils/ExpressError.js");
 const wrapAsync=require("./utils/wrapAsync.js");
 const {listingSchema,reviewSchema}=require("./schema.js");
+
 //routes
 const listingrouter=require("./routes/listing.js"); 
 const reviewrouter=require("./routes/review.js");   
-const userrouter=require("./routes/user.js");       
+const userrouter=require("./routes/user.js");     
+
 const session=require("express-session");
 const {MongoStore} = require('connect-mongo');
 const flash=require("connect-flash");
@@ -103,34 +111,23 @@ app.use((req,res,next)=>{
 
 
 
-app.get("/testlisting",async (req,res)=>{
-    let samplelisting =new listing({
-        title:"my title",
-        description:"my desciption",
-        price:1200,
-        location:"attili",
-        country:"india"
-    })
-    await samplelisting.save();
-    res.send("tested succesfully");
-})
 // directing the incoming request to their respective route
 app.use("/",userrouter);
 app.use("/listings",listingrouter);
 app.use("/listings/:id/reviews",reviewrouter);
-
-
-
 // error generation for invalid request
 app.use((req,res,next)=>{
     next(new ExpressError(404,"page not found"));
 });
+
+
 // error handling middleware
 app.use((err,req,res,next)=>{
    let {status=500,message="something went wrong"}=err;
    console.error(err);
    res.status(status).render("error.ejs",{err});
 });
+
 app.listen(3000,()=>{
     console.log("app is listining at port 3000");
 })

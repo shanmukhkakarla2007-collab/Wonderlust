@@ -1,5 +1,6 @@
 const express=require("express");
 const router=express.Router();
+
 const listing=require("../models/listing.js");
 const review=require("../models/review.js");
 const ExpressError=require("../utils/ExpressError.js");
@@ -20,6 +21,7 @@ router
 router.get("/new",isloggedin,listingcontroller.rendernew);
 router.get("/filter/:filtername",listingcontroller.filterlistings);
 router.get("/search",listingcontroller.searchlistings);
+
 router
     .route("/:id")
     .get(wrapAsync(listingcontroller.showlisting))
