@@ -1,6 +1,5 @@
 const joi=require("joi");
 
-
 module.exports.listingSchema=joi.object({
     listing:joi.object({
         title:joi.string().required(),
@@ -12,6 +11,7 @@ module.exports.listingSchema=joi.object({
         category:joi.string().required()
     }).required()
 })
+
 
 module.exports.reviewSchema=joi.object({
     review:joi.object({
